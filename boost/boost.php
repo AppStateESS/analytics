@@ -1,17 +1,17 @@
 <?php
-  /**
-   * @author Jeff Tickle <jtickle@tux.appstate.edu>
-   * @version $Id$
-   */
 
-$proper_name  = 'Analytics';
-$version      = '1.1.1';
-$register     = false;
-$unregister   = false;
-$import_sql   = true;
+/**
+ * @author Jeff Tickle <jtickle@tux.appstate.edu>
+ * @version $Id$
+ */
+$proper_name = 'Analytics';
+$version = '1.1.2';
+$register = false;
+$unregister = false;
+$import_sql = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/analytics/check.xml';
-$about        = true;
-$priority     = 50;
-$dependency   = false;
-$image_dir    = false;
+$about = true;
+$priority = 50;
+$dependency = false;
+$image_dir = false;
 

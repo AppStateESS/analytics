@@ -4,29 +4,30 @@
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 function analytics_update(&$content, $currentVersion)
 {
-    switch($currentVersion) {
+    switch ($currentVersion) {
         case version_compare($currentVersion, '1.0.1', '<'):
             $db = new PHPWS_DB('analytics_tracker');
-            $result = $db->addTableColumn('disable_if_logged', 'int NOT NULL default 0');
-            if(PHPWS_Error::logIfError($result)) {
+            $result = $db->addTableColumn('disable_if_logged',
+                    'int NOT NULL default 0');
+            if (PHPWS_Error::logIfError($result)) {
                 $content[] = 'Unable to add disable_if_logged column to analytics_tracker table.';
                 return false;
             }
 
             $files = array('templates/edit.tpl');
-            if(PHPWS_Boost::updateFiles($files, 'analytics')) {
+            if (PHPWS_Boost::updateFiles($files, 'analytics')) {
                 $content[] = '--- Updated templates/edit.tpl';
             }
 
         case version_compare($currentVersion, '1.1.0', '<'):
             // install.sql has been wrong for awhile, this should fix any discrepancies
             $db = new PHPWS_DB('analytics_tracker');
-            if(!$db->isTableColumn('disable_if_logged')) {
-                $result = $db->addTableColumn('disable_if_logged', 'int NOT NULL default 0');
-                if(PHPWS_Error::logIfError($result)) {
+            if (!$db->isTableColumn('disable_if_logged')) {
+                $result = $db->addTableColumn('disable_if_logged',
+                        'int NOT NULL default 0');
+                if (PHPWS_Error::logIfError($result)) {
                     $content[] = 'Unable to add disable_if_logged column to analytics_tracker table.';
                     return false;
                 }
@@ -36,7 +37,7 @@ function analytics_update(&$content, $currentVersion)
             // Load new schema
             $db = new PHPWS_DB;
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/analytics/boost/update/1.1.0.sql');
-            if(PHPWS_Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $content[] = 'Unable to import updated schema for version 1.1.0.';
                 return false;
             }
@@ -48,12 +49,12 @@ function analytics_update(&$content, $currentVersion)
             $db->addColumn('account');
             $db->addWhere('type', 'GoogleAnalyticsTracker');
             $result = $db->select();
-            if(PHPWS_Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $content[] = 'Unable to select Google Analytics tracker from analytics_tracker table.';
                 return false;
             }
 
-            foreach($result as $row) {
+            foreach ($result as $row) {
                 $db = new PHPWS_DB('analytics_tracker_google');
                 $db->addValue('id', $row['id']);
                 // Adding UA- into the account identifier to reduce confusion
@@ -64,7 +65,7 @@ function analytics_update(&$content, $currentVersion)
 
             $db = new PHPWS_DB('analytics_tracker');
             $result = $db->dropTableColumn('account');
-            if(PHPWS_Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $content[] = 'Unable to remove account column from analytics_tracker table.';
                 return false;
             }
@@ -78,9 +79,14 @@ function analytics_update(&$content, $currentVersion)
 + Fixed uninstall script
 </pre>
 EOF;
-
+        case version_compare($currentVersion, '1.1.2', '<'):
+            $content[] = <<<EOF
+<pre>Version 1.1.2
+-------------------
++ Updated Google Analytics script
+</pre>
+EOF;
     }
 
     return true;
 }
-
