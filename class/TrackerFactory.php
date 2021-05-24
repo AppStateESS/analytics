@@ -66,7 +66,14 @@ class TrackerFactory
     {
         self::joinAll($db);
         $db->addColumn('analytics_tracker.*');
-        $result = $db->select();
+        try {
+            $result = $db->select();
+        } catch (\Exception $e) {
+            if (\Current_User::isDeity()) {
+                \Layout::add('<div class="alert alert-danger">Analytics is returning an error: ' . $e->getMessage() . '</div>', 'analytics');
+            }
+            return false;
+        }
         if (PHPWS_Error::logIfError($result)) {
             return FALSE;
         }
@@ -78,7 +85,8 @@ class TrackerFactory
             if (!$found) {
                 continue;
             }
-            $t = new $tracker['type']();
+            $trackerType = $tracker['type'];
+            $t = new $trackerType;
             \phpws\PHPWS_Core::plugObject($t, $tracker);
             $trackers[] = $t;
         }
