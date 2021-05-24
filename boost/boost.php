@@ -5,7 +5,7 @@
  * @version $Id$
  */
 $proper_name = 'Analytics';
-$version = '1.1.2';
+$version = '1.2.0';
 $register = false;
 $unregister = false;
 $import_sql = true;

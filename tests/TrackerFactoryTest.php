@@ -4,22 +4,25 @@
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 require_once(PHPWS_SOURCE_DIR . 'mod/analytics/class/TrackerFactory.php');
 
 class TrackerFactoryTest extends PHPUnit_Framework_TestCase
 {
+
     public function testInstantiateTrackers()
     {
         $this->assertTrue(
-            TrackerFactory::newByType('GoogleAnalyticsTracker')
-            instanceof GoogleAnalyticsTracker);
+                TrackerFactory::newByType('GoogleAnalyticsTracker')
+                instanceof GoogleAnalyticsTracker);
         $this->assertTrue(
-            TrackerFactory::newByType('OpenWebAnalyticsTracker')
-            instanceof OpenWebAnalyticsTracker);
+                TrackerFactory::newByType('GoogleAnalytics4')
+                instanceof GoogleAnalytics4);
         $this->assertTrue(
-            TrackerFactory::newByType('PiwikTracker')
-            instanceof PiwikTracker);
+                TrackerFactory::newByType('OpenWebAnalyticsTracker')
+                instanceof OpenWebAnalyticsTracker);
+        $this->assertTrue(
+                TrackerFactory::newByType('PiwikTracker')
+                instanceof PiwikTracker);
     }
-}
 
+}

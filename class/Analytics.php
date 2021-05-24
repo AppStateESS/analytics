@@ -4,57 +4,59 @@
  * Analytics Controller Class
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 class Analytics
 {
+
     public static function injectTrackers()
     {
         \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $trackers = TrackerFactory::getActive();
 
-        if(empty($trackers)) return;
+        if (empty($trackers))
+            return;
 
-        foreach($trackers as $tracker) {
+        foreach ($trackers as $tracker) {
             $tracker->track();
         }
     }
 
     public static function process()
     {
-        if(!Current_User::authorized('analytics')) Current_User::disallow();
+        if (!Current_User::authorized('analytics'))
+            Current_User::disallow();
 
         $panel = self::cpanel();
 
-        if(isset($_REQUEST['command'])) {
+        if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
         } else {
             $command = $panel->getCurrentTab();
         }
 
-        switch($command) {
-        case 'list':
-            $panel->setContent(self::listTrackers());
-            break;
+        switch ($command) {
+            case 'list':
+                $panel->setContent(self::listTrackers());
+                break;
 
-        case 'new':
-            $panel->setContent(self::newTracker());
-            break;
+            case 'new':
+                $panel->setContent(self::newTracker());
+                break;
 
-        case 'create':
-            $panel->setContent(self::createTracker());
-            break;
+            case 'create':
+                $panel->setContent(self::createTracker());
+                break;
 
-        case 'edit':
-            $panel->setContent(self::editTracker());
-            break;
+            case 'edit':
+                $panel->setContent(self::editTracker());
+                break;
 
-        case 'delete':
-            $panel->setContent(self::deleteTracker());
-            break;
+            case 'delete':
+                $panel->setContent(self::deleteTracker());
+                break;
 
-        case 'save_tracker':
-            $panel->setContent(self::saveTracker());
-            break;
+            case 'save_tracker':
+                $panel->setContent(self::saveTracker());
+                break;
         }
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
@@ -95,7 +97,7 @@ class Analytics
 
         $classes = TrackerFactory::getAvailableClasses();
         $trackers = array();
-        foreach($classes as $class) {
+        foreach ($classes as $class) {
             $trackers[$class] = $class;
         }
         $form->addSelect('tracker', $trackers);
@@ -116,6 +118,7 @@ class Analytics
     {
         \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $tracker = TrackerFactory::getById($_REQUEST['tracker_id']);
+
         return self::showEditForm($tracker);
     }
 
@@ -131,7 +134,7 @@ class Analytics
     public static function saveTracker()
     {
         \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
-        if(isset($_REQUEST['tracker_id'])) {
+        if (isset($_REQUEST['tracker_id'])) {
             $tracker = TrackerFactory::getById($_REQUEST['tracker_id']);
         } else {
             $tracker = TrackerFactory::newByType($_REQUEST['tracker']);
@@ -145,7 +148,7 @@ class Analytics
 
     public static function redirectList()
     {
-        $redirect = PHPWS_Text::linkAddress('analytics', array('tab'=>'list'), true, false, false);
+        $redirect = PHPWS_Text::linkAddress('analytics', array('tab' => 'list'), true, false, false);
 
         header('HTTP/1.1 303 See Other');
         header('Location: ' . $redirect);
@@ -163,11 +166,11 @@ class Analytics
         $form->addHidden('command', 'save_tracker');
         $form->addSubmit('submit', 'Save Tracker');
 
-        if(isset($_REQUEST['tracker'])) {
+        if (isset($_REQUEST['tracker'])) {
             $form->addHidden('tracker', $_REQUEST['tracker']);
         }
 
-        if($tracker->getId() > 0) {
+        if ($tracker->getId() > 0) {
             $form->addHidden('tracker_id', $tracker->getId());
         }
 
@@ -184,7 +187,6 @@ class Analytics
         $form->setLabel('disable_if_logged', 'Disable Analytics if a user is logged in');
 
         $tracker->addForm($form);
-
         $tpl = array_merge($tpl, $form->getTemplate());
 
         $tpl['TRACKER_FORM'] = PHPWS_Template::process($tpl, 'analytics', $tracker->getFormTemplate());
@@ -195,11 +197,11 @@ class Analytics
     public static function cpanel()
     {
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        
+
         $link = PHPWS_Text::linkAddress('analytics', null, false, false, true, false);
 
         $tabs['list'] = array('title' => 'List Trackers', 'link' => $link);
-        $tabs['new']  = array('title' => 'New Tracker',   'link' => $link);
+        $tabs['new'] = array('title' => 'New Tracker', 'link' => $link);
 
         $panel = new PHPWS_Panel('analyticsPanel');
         $panel->enableSecure();
@@ -209,5 +211,5 @@ class Analytics
 
         return $panel;
     }
-}
 
+}

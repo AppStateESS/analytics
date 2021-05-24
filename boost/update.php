@@ -86,6 +86,21 @@ EOF;
 + Updated Google Analytics script
 </pre>
 EOF;
+
+        case version_compare($currentVersion, '1.2.0', '<'):
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->buildTable('analytics_tracker_google_4');
+            $dt = $tbl->addDataType('account4', 'varchar');
+            $dt->setSize(255);
+            $tbl->addPrimaryIndexId();
+            $tbl->create();
+
+            $content[] = <<<EOF
+<pre>Version 1.2.0
+-------------------
++ Added Google Analytics 4 script
+</pre>
+EOF;
     }
 
     return true;

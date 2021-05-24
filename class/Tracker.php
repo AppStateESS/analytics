@@ -4,9 +4,9 @@
  * Analytics Tracker Abstract Class
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 abstract class Tracker
 {
+
     var $id;
     var $name;
     var $type;
@@ -19,24 +19,31 @@ abstract class Tracker
     }
 
     public abstract function track();
+
     public abstract function trackerType();
+
     public abstract function addForm(PHPWS_Form &$form);
+
     public abstract function joinDb(PHPWS_DB &$db);
+
     public abstract function getFormTemplate();
 
     public function processForm(array $values)
     {
+
         $this->setName(PHPWS_Text::parseInput($values['name']));
 
-        if(isset($values['active']))
+        if (isset($values['active'])) {
             $this->setActive();
-        else
+        } else {
             $this->setInactive();
+        }
 
-        if(isset($values['disable_if_logged']))
+        if (isset($values['disable_if_logged'])) {
             $this->setDisableIfLogged(true);
-        else
+        } else {
             $this->setDisableIfLogged(false);
+        }
     }
 
     public function delete()
@@ -44,7 +51,7 @@ abstract class Tracker
         $db = new PHPWS_DB('analytics_tracker');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if(PHPWS_Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return $result;
         }
     }
@@ -53,7 +60,7 @@ abstract class Tracker
     {
         $db = new PHPWS_DB('analytics_tracker');
         $result = $db->saveObject($this);
-        if(PHPWS_Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return $result;
         }
     }
@@ -107,5 +114,5 @@ abstract class Tracker
     {
         return $this->disable_if_logged;
     }
-}
 
+}
