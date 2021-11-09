@@ -70,6 +70,16 @@ abstract class Tracker
         Layout::add($content, 'analytics', 'end_body');
     }
 
+    public static function addStartBody($content)
+    {
+        Layout::add($content, 'analytics', 'start_body');
+    }
+
+    public static function addHead($content)
+    {
+        Layout::add($content, 'analytics', 'head');
+    }
+
     public function getId()
     {
         return $this->id;
