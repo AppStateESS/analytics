@@ -72,7 +72,7 @@ class GoogleAnalytics4Tracker extends Tracker
     public function addForm(PHPWS_Form &$form)
     {
         $form->addText('account4', $this->getAccount4());
-        $form->setLabel('account4', dgettext('analytics', 'Account Identifier (ie, G-XXXXXXXXXX)'));
+        $form->setLabel('account4', 'Account Identifier (ie, G-XXXXXXXXXX)');
         $form->setRequired('account4');
     }
 
@@ -85,7 +85,7 @@ class GoogleAnalytics4Tracker extends Tracker
     public function joinDb(PHPWS_DB &$db)
     {
         $db->addJoin('left outer',
-                'analytics_tracker', 'analytics_tracker_google_4', 'id', 'id');
+            'analytics_tracker', 'analytics_tracker_google_4', 'id', 'id');
         $db->addColumn('analytics_tracker_google_4.account4');
     }
 
