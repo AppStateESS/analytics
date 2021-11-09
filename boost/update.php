@@ -10,7 +10,7 @@ function analytics_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.0.1', '<'):
             $db = new PHPWS_DB('analytics_tracker');
             $result = $db->addTableColumn('disable_if_logged',
-                    'int NOT NULL default 0');
+                'int NOT NULL default 0');
             if (PHPWS_Error::logIfError($result)) {
                 $content[] = 'Unable to add disable_if_logged column to analytics_tracker table.';
                 return false;
@@ -26,7 +26,7 @@ function analytics_update(&$content, $currentVersion)
             $db = new PHPWS_DB('analytics_tracker');
             if (!$db->isTableColumn('disable_if_logged')) {
                 $result = $db->addTableColumn('disable_if_logged',
-                        'int NOT NULL default 0');
+                    'int NOT NULL default 0');
                 if (PHPWS_Error::logIfError($result)) {
                     $content[] = 'Unable to add disable_if_logged column to analytics_tracker table.';
                     return false;
@@ -99,6 +99,20 @@ EOF;
 <pre>Version 1.2.0
 -------------------
 + Added Google Analytics 4 script
+</pre>
+EOF;
+        case version_compare($currentVersion, '1.3.0', '<'):
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->buildTable('analytics_tag_google');
+            $dt = $tbl->addDataType('tagAccount', 'varchar');
+            $dt->setSize(255);
+            $tbl->addPrimaryIndexId();
+            $tbl->create();
+
+            $content[] = <<<EOF
+<pre>Version 1.3.0
+-------------------
++ Added Google Tag script
 </pre>
 EOF;
     }

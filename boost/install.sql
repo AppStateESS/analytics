@@ -16,6 +16,11 @@ CREATE TABLE analytics_tracker_google_4 (
     account4 VARCHAR(255)
 );
 
+CREATE TABLE analytics_tag_google (
+    id      INTEGER NOT NULL PRIMARY KEY,
+    tagAccount VARCHAR(255)
+);
+
 CREATE TABLE analytics_tracker_piwik (
     id        INTEGER NOT NULL PRIMARY KEY,
     piwik_url VARCHAR(255),
